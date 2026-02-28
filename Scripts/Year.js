@@ -36,16 +36,16 @@ const ALL_DATA = {
         subtitle: "growth year",
         summary: { totalSharesBought: 142, totalInvested: 127400, portfolioReturn: 11.8, dividendsReceived: 12650, bestPerformer: "BAJFINANCE", worstPerformer: "TATASTEEL", numberOfTransactions: 18, portfolioStartValue: 485000, portfolioEndValue: 582300 },
         quarters: [
-            { quarter: "Q1", label: "Jan — Mar 2025", dividends: 2100, note: "New year, new capital. TATASTEEL added on metals thesis.", sharesAdded: 60, invested: 42000, highlights: ["TATASTEEL 180 shares initiated", "RELIANCE dividend — ₹2,100", "Portfolio up 4.1% YTD"] },
-            { quarter: "Q2", label: "Apr — Jun 2025", dividends: 3800, note: "Strong quarter. IT earnings surprise on the upside.", sharesAdded: 45, invested: 52000, highlights: ["Best quarter of 2025 — +7.3% single quarter", "TCS & INFY dividends received", "Portfolio crosses ₹6L valuation milestone"] },
-            { quarter: "Q3", label: "Jul — Sep 2025", dividends: 4200, note: "Consolidation phase. No new positions.", sharesAdded: 22, invested: 21400, highlights: ["Averaging down WIPRO at ₹580", "BAJFINANCE strong — up 18% YTD", "Monsoon rally lifts consumer stocks"] },
-            { quarter: "Q4", label: "Oct — Dec 2025", dividends: 2550, note: "Year-end review. Portfolio at all-time high.", sharesAdded: 15, invested: 12000, highlights: ["Portfolio hits ATH — ₹6.2L", "Year closes at +11.8% return", "Dividend income ₹12,650 for the year"] }
+            { quarter: "Q1", label: "Jan — Mar 2025", dividends: 84.5, note: "New year, new capital. TATASTEEL added on metals thesis.", sharesAdded: 60, invested: 42000, highlights: ["TATASTEEL 180 shares initiated", "RELIANCE dividend — ₹2,100", "Portfolio up 4.1% YTD"] },
+            { quarter: "Q2", label: "Apr — Jun 2025", dividends: 550.35, note: "Strong quarter. IT earnings surprise on the upside.", sharesAdded: 45, invested: 52000, highlights: ["Best quarter of 2025 — +7.3% single quarter", "TCS & INFY dividends received", "Portfolio crosses ₹6L valuation milestone"] },
+            { quarter: "Q3", label: "Jul — Sep 2025", dividends: 70.4, note: "Consolidation phase. No new positions.", sharesAdded: 22, invested: 21400, highlights: ["Averaging down WIPRO at ₹580", "BAJFINANCE strong — up 18% YTD", "Monsoon rally lifts consumer stocks"] },
+            { quarter: "Q4", label: "Oct — Dec 2025", dividends: 389, note: "Year-end review. Portfolio at all-time high.", sharesAdded: 15, invested: 12000, highlights: ["Portfolio hits ATH — ₹6.2L", "Year closes at +11.8% return", "Dividend income ₹12,650 for the year"] }
         ],
         monthlyEvents: [
-            { month: "January", event: "New year capital deployed. TATASTEEL thesis initiated.", type: "buy", impact: "positive" },
-            { month: "February", event: "Budget 2025 — markets volatile. Watched from sidelines.", type: "watchlist", impact: "neutral" },
-            { month: "March", event: "Q3 results season. RELIANCE dividend received.", type: "dividend", impact: "positive" },
-            { month: "April", event: "IT sector earnings blow past estimates. TCS rallies 9% in a day.", type: "milestone", impact: "positive" },
+            { month: "January", event: "Includes compensation for the 5 unused leave days for the year 2024. (5 * 833)", type: "buy", impact: "positive" },
+            { month: "February", event: "Includes money from my mother (~2,000) and from my father (~500)  for the 2 day program at Darza Resorts, Coimbatore. Which was company sponsored.", type: "watchlist", impact: "neutral" },
+            { month: "March", event: "Includes the bonus amount of (12,500).", type: "dividend", impact: "positive" },
+            { month: "April", event: "Preparation for my papa as he was leaving to Dubai.", type: "milestone", impact: "positive" },
             { month: "May", event: "Added INFY on post-earnings dip — best price of the year.", type: "buy", impact: "positive" },
             { month: "June", event: "Portfolio crosses ₹6L. Celebrated with a coffee ☕", type: "milestone", impact: "positive" },
             { month: "July", event: "Averaged down WIPRO — thesis still intact.", type: "buy", impact: "neutral" },
@@ -71,7 +71,6 @@ const data = ALL_DATA[yearParam];
 
 // ——— RENDER ———
 function render(d) {
-    document.title = `${d.year} — CSE`;
     const page = document.getElementById('pageContent');
 
     // total dividends
