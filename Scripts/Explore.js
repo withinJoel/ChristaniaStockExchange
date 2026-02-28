@@ -1,14 +1,6 @@
 // ——— DATA ———
-const holdings = [
-    { ticker: "RELIANCE", name: "Reliance Industries", sector: "Energy & Petrochem", shares: 42, avgPrice: 2840.50, currentPrice: 3120.75, weightage: 21.2, dayChange: 0.85 },
-    { ticker: "TCS", name: "Tata Consultancy Services", sector: "IT Services", shares: 28, avgPrice: 3680.00, currentPrice: 4210.30, weightage: 18.9, dayChange: 1.24 },
-    { ticker: "INFY", name: "Infosys Ltd", sector: "IT Services", shares: 55, avgPrice: 1420.00, currentPrice: 1780.50, weightage: 15.7, dayChange: -0.32 },
-    { ticker: "HDFCBANK", name: "HDFC Bank Ltd", sector: "Banking & Finance", shares: 38, avgPrice: 1560.00, currentPrice: 1720.80, weightage: 13.2, dayChange: 0.54 },
-    { ticker: "BAJFINANCE", name: "Bajaj Finance Ltd", sector: "NBFC & Finance", shares: 12, avgPrice: 6800.00, currentPrice: 7450.20, weightage: 14.3, dayChange: 1.05 },
-    { ticker: "WIPRO", name: "Wipro Ltd", sector: "IT Services", shares: 90, avgPrice: 520.00, currentPrice: 635.40, weightage: 9.2, dayChange: -0.78 },
-    { ticker: "TATASTEEL", name: "Tata Steel Ltd", sector: "Metals & Mining", shares: 180, avgPrice: 145.00, currentPrice: 162.80, weightage: 4.7, dayChange: -1.22 },
-    { ticker: "ZOMATO", name: "Zomato Ltd", sector: "Consumer Tech", shares: 320, avgPrice: 110.00, currentPrice: 198.40, weightage: 2.8, dayChange: 2.14 }
-];
+let holdings = [];
+let portfolioData = null;
 
 // ——— CHART DATA ———
 function genWalk(n, start, end, vol) {
@@ -73,7 +65,9 @@ function createGradient() {
 
 function renderChart(period) {
     const cfg = periodConfigs[period];
-    const data = genWalk(cfg.n, cfg.start, cfg.end, cfg.vol);
+    // Use portfolio info for current end value if we have it
+    const endVal = portfolioData ? portfolioData.index.current : cfg.end;
+    const data = genWalk(cfg.n, cfg.start, endVal, cfg.vol);
     const labels = generateLabels(period);
 
     if (mainChart) mainChart.destroy();
@@ -151,8 +145,6 @@ document.querySelectorAll('.period-btn').forEach(btn => {
         renderChart(btn.dataset.period);
     });
 });
-
-renderChart('1m');
 
 // ——— HOLDINGS CARDS ———
 let currentSort = 'weight';
@@ -236,4 +228,41 @@ document.querySelectorAll('.sort-btn').forEach((btn, i) => {
     });
 });
 
-renderCards(holdings);
+async function loadDataAndRender() {
+    try {
+        const res = await fetch('data/portfolio.json');
+        if (!res.ok) throw new Error('Data not found');
+        portfolioData = await res.json();
+
+        // Update top hero section
+        if (portfolioData.index) {
+            document.getElementById('bigVal').textContent = portfolioData.index.current.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+            const p = document.getElementById('bigPill');
+            const chg = portfolioData.index.change;
+            if (chg >= 0) {
+                p.className = 'pill up';
+                p.textContent = `▲ +${chg} (+${portfolioData.index.changePct}%)`;
+            } else {
+                p.className = 'pill dn';
+                p.textContent = `▼ ${chg} (${portfolioData.index.changePct}%)`;
+            }
+
+            const stats = document.querySelectorAll('.explore-stat-val');
+            if (stats.length >= 3) {
+                stats[0].textContent = portfolioData.index.allTimeHigh.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                stats[1].textContent = portfolioData.index.allTimeLow.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                stats[2].textContent = `+${portfolioData.index.totalReturn}%`;
+            }
+        }
+
+        holdings = portfolioData.holdings || [];
+    } catch (e) {
+        console.warn('Failed to fetch portfolio data via JSON', e);
+    }
+
+    // In case fetch failed or succeeded, render the content
+    renderChart('1m');
+    sortHoldings('weight');
+}
+
+loadDataAndRender();
