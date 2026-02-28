@@ -1,624 +1,747 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSE — Christania Stock Exchange</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    /* ——— TICKER TAPE ——— */
-    .ticker-tape {
-      background: var(--pink);
-      overflow: hidden;
-      white-space: nowrap;
-      padding: 0.4rem 0;
-      position: relative;
-    }
-    .ticker-inner {
-      display: inline-block;
-      animation: ticker-scroll 30s linear infinite;
-    }
-    .ticker-item {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: white;
-      padding: 0 2rem;
-      letter-spacing: 0.05em;
-    }
-    .ticker-item .sep { opacity: 0.4; margin: 0 0.5rem; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE — Christania Stock Exchange</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ——— TICKER TAPE ——— */
+        .ticker-tape {
+            background: var(--pink);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 0.4rem 0;
+            position: relative;
+        }
 
-    /* ——— HERO ——— */
-    .hero {
-      padding: 6rem 2.5rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(255,46,99,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-bg-grid {
-      position: absolute;
-      inset: 0;
-      background-image: 
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
-    }
-    .hero-eyebrow {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      color: var(--pink);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.1s ease forwards;
-    }
-    .hero-title {
-      font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: clamp(3rem, 8vw, 7rem);
-      line-height: 0.9;
-      letter-spacing: -0.04em;
-      text-transform: uppercase;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.2s ease forwards;
-    }
-    .hero-title .wild {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-style: italic;
-      color: var(--pink);
-      text-transform: none;
-      letter-spacing: -0.02em;
-    }
-    .hero-sub {
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      max-width: 500px;
-      line-height: 1.7;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.3s ease forwards;
-    }
-    .hero-cta {
-      margin-top: 2.5rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.4s ease forwards;
-    }
+        .ticker-inner {
+            display: inline-block;
+            animation: ticker-scroll 30s linear infinite;
+        }
 
-    /* ——— INDEX CARD ——— */
-    .index-hero-card {
-      position: absolute;
-      right: 2.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 340px;
-      background: var(--bg2);
-      border: 1px solid var(--border-pink);
-      padding: 2rem;
-      opacity: 0;
-      animation: fadeIn 0.8s 0.5s ease forwards;
-    }
-    .index-hero-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--pink), transparent);
-    }
-    .ihc-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      color: var(--text-dimmer);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-    .ihc-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 2.8rem;
-      color: var(--text);
-      line-height: 1;
-    }
-    .ihc-change {
-      margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .ihc-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 1.2rem 0;
-    }
-    .ihc-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-    .ihc-stat-label {
-      font-size: 0.65rem;
-      color: var(--text-dimmer);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.2rem;
-    }
-    .ihc-stat-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .live-dot {
-      display: inline-block;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: pulse-dot 2s infinite;
-      margin-right: 4px;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.7); }
-    }
+        .ticker-item {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: white;
+            padding: 0 2rem;
+            letter-spacing: 0.05em;
+        }
 
-    /* ——— STATS ROW ——— */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin: 0 2.5rem;
-    }
-    .stat-block {
-      background: var(--bg);
-      padding: 2rem 1.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: background 0.2s;
-    }
-    .stat-block:hover { background: var(--bg2); }
-    .stat-block::after {
-      content: attr(data-index);
-      position: absolute;
-      right: 1rem; top: 50%;
-      transform: translateY(-50%);
-      font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: 4rem;
-      color: rgba(255,255,255,0.03);
-      pointer-events: none;
-    }
-    .stat-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-dimmer);
-      margin-bottom: 0.5rem;
-    }
-    .stat-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1;
-    }
-    .stat-sub {
-      margin-top: 0.3rem;
-      font-size: 0.72rem;
-      color: var(--text-dim);
-    }
+        .ticker-item .sep {
+            opacity: 0.4;
+            margin: 0 0.5rem;
+        }
 
-    /* ——— SECTION ——— */
-    .section {
-      padding: 4rem 2.5rem;
-    }
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-    }
+        /* ——— HERO ——— */
+        .hero {
+            padding: 6rem 2.5rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* ——— HOLDINGS PREVIEW ——— */
-    .holdings-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .holdings-table th {
-      text-align: left;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-dimmer);
-      padding: 0.6rem 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .holdings-table td {
-      padding: 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      font-size: 0.85rem;
-      vertical-align: middle;
-    }
-    .holdings-table tr:hover td { background: var(--surface); }
-    .h-ticker {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 0.82rem;
-      color: var(--text);
-    }
-    .h-name { color: var(--text-dim); font-size: 0.78rem; }
-    .h-sector {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-dimmer);
-    }
-    .h-weight {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-    }
-    .weight-bar-wrap {
-      width: 80px;
-      height: 3px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-    .weight-bar { height: 100%; background: var(--pink); border-radius: 2px; }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(255, 46, 99, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
 
-    /* ——— OVER THE YEARS BOX ——— */
-    .years-box {
-      margin: 0 2.5rem;
-      background: var(--bg2);
-      border: 1px solid var(--border-pink);
-      padding: 3rem;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-    }
-    .years-box::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 0% 50%, rgba(255,46,99,0.1), transparent 60%);
-      pointer-events: none;
-    }
-    .years-box:hover { border-color: var(--pink); }
-    .years-box:hover .yb-arrow { transform: translateX(8px); }
-    .yb-left { position: relative; z-index: 1; }
-    .yb-eyebrow {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      color: var(--pink);
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-    }
-    .yb-title {
-      font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
-      line-height: 1;
-    }
-    .yb-desc {
-      margin-top: 0.8rem;
-      color: var(--text-dim);
-      font-size: 0.85rem;
-      max-width: 400px;
-    }
-    .yb-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.5rem;
-      position: relative; z-index: 1;
-    }
-    .yb-years {
-      display: flex;
-      gap: 1rem;
-    }
-    .yb-year-chip {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.4rem 0.8rem;
-      border: 1px solid var(--border-pink);
-      color: var(--text-dim);
-      background: var(--pink-dim);
-    }
-    .yb-arrow {
-      font-size: 2rem;
-      color: var(--pink);
-      transition: transform 0.3s;
-      font-weight: 900;
-    }
+        .hero-bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+        }
 
-    /* ——— SECTOR BREAKDOWN ——— */
-    .sector-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-    .sector-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .sector-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .sector-name {
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      flex: 1;
-    }
-    .sector-pct {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text);
-      width: 4rem;
-      text-align: right;
-    }
-    .sector-bar-track {
-      width: 120px;
-      height: 2px;
-      background: rgba(255,255,255,0.08);
-      position: relative;
-    }
-    .sector-bar-fill { height: 100%; }
+        .hero-eyebrow {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--pink);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.6s 0.1s ease forwards;
+        }
 
-    /* ——— MINI CHART ——— */
-    .mini-chart-wrap { position: relative; height: 80px; }
+        .hero-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: clamp(3rem, 8vw, 7rem);
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUp 0.6s 0.2s ease forwards;
+        }
 
-    @media (max-width: 1100px) {
-      .index-hero-card { display: none; }
-      .hero { padding-right: 2.5rem; }
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 600px) {
-      .stats-row { grid-template-columns: 1fr; }
-      .section { padding: 3rem 1.2rem; }
-      .stats-row, .years-box { margin: 0 1.2rem; }
-    }
-  </style>
+        .hero-title .wild {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--pink);
+            text-transform: none;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-sub {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            max-width: 500px;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeUp 0.6s 0.3s ease forwards;
+        }
+
+        .hero-cta {
+            margin-top: 2.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.6s 0.4s ease forwards;
+        }
+
+        /* ——— INDEX CARD ——— */
+        .index-hero-card {
+            position: absolute;
+            right: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 340px;
+            background: var(--bg2);
+            border: 1px solid var(--border-pink);
+            border-radius: 28px;
+            padding: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.8s 0.5s ease forwards;
+        }
+
+        .index-hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            border-top-left-radius: 28px;
+            border-top-right-radius: 28px;
+            background: linear-gradient(90deg, var(--pink), transparent);
+        }
+
+        .ihc-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--text-dimmer);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .ihc-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 2.8rem;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .ihc-change {
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ihc-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 1.2rem 0;
+        }
+
+        .ihc-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .ihc-stat-label {
+            font-size: 0.65rem;
+            color: var(--text-dimmer);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+        }
+
+        .ihc-stat-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse-dot 2s infinite;
+            margin-right: 4px;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.7);
+            }
+        }
+
+        /* ——— STATS ROW ——— */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin: 0 2.5rem;
+        }
+
+        .stat-block {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .stat-block:hover {
+            background: var(--bg2);
+        }
+
+        .stat-block::after {
+            content: attr(data-index);
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-dimmer);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .stat-sub {
+            margin-top: 0.3rem;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+        }
+
+        /* ——— SECTION ——— */
+        .section {
+            padding: 4rem 2.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        /* ——— HOLDINGS PREVIEW ——— */
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .holdings-table th {
+            text-align: left;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dimmer);
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .holdings-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.85rem;
+            vertical-align: middle;
+        }
+
+        .holdings-table tr:hover td {
+            background: var(--surface);
+        }
+
+        .h-ticker {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: var(--text);
+        }
+
+        .h-name {
+            color: var(--text-dim);
+            font-size: 0.78rem;
+        }
+
+        .h-sector {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-dimmer);
+        }
+
+        .h-weight {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+
+        .weight-bar-wrap {
+            width: 80px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .weight-bar {
+            height: 100%;
+            background: var(--pink);
+            border-radius: 4px;
+        }
+
+        /* ——— OVER THE YEARS BOX ——— */
+        .years-box {
+            margin: 0 2.5rem;
+            background: var(--bg2);
+            border: 1px solid var(--border-pink);
+            border-radius: 28px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .years-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 0% 50%, rgba(255, 46, 99, 0.1), transparent 60%);
+            pointer-events: none;
+        }
+
+        .years-box:hover {
+            border-color: var(--pink);
+        }
+
+        .years-box:hover .yb-arrow {
+            transform: translateX(8px);
+        }
+
+        .yb-left {
+            position: relative;
+            z-index: 1;
+        }
+
+        .yb-eyebrow {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--pink);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .yb-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .yb-desc {
+            margin-top: 0.8rem;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            max-width: 400px;
+        }
+
+        .yb-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .yb-years {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .yb-year-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border-pink);
+            border-radius: 12px;
+            color: var(--text-dim);
+            background: var(--pink-dim);
+        }
+
+        .yb-arrow {
+            font-size: 2rem;
+            color: var(--pink);
+            transition: transform 0.3s;
+            font-weight: 900;
+        }
+
+        /* ——— SECTOR BREAKDOWN ——— */
+        .sector-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .sector-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sector-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sector-name {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            flex: 1;
+        }
+
+        .sector-pct {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text);
+            width: 4rem;
+            text-align: right;
+        }
+
+        .sector-bar-track {
+            width: 120px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .sector-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        /* ——— MINI CHART ——— */
+        .mini-chart-wrap {
+            position: relative;
+            height: 80px;
+        }
+
+        @media (max-width: 1100px) {
+            .index-hero-card {
+                display: none;
+            }
+
+            .hero {
+                padding-right: 2.5rem;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 3rem 1.2rem;
+            }
+
+            .stats-row,
+            .years-box {
+                margin: 0 1.2rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- ——— TICKER TAPE ——— -->
-<div class="ticker-tape">
-  <div class="ticker-inner" id="ticker">
-    <!-- Populated by JS -->
-  </div>
-</div>
-
-<!-- ——— NAV ——— -->
-<nav>
-  <a href="index.html" class="nav-logo">
-    <span class="nav-logo-main"><span>C</span>SE</span>
-    <span class="nav-logo-sub">christania stock exchange</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="index.html" class="active">Index</a></li>
-    <li><a href="explore.html">Explore</a></li>
-    <li><a href="history.html">History</a></li>
-  </ul>
-  <div class="nav-ticker" id="nav-ticker">
-    <span class="live-dot"></span>
-    <span class="mono" id="nav-index">CSEC <span class="up">1847.32</span></span>
-  </div>
-</nav>
-
-<div class="page">
-
-  <!-- ——— HERO ——— -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-bg-grid"></div>
-
-    <div class="hero-eyebrow">// personal market intelligence</div>
-    <h1 class="hero-title">
-      Christania<br>
-      <span class="wild">Stock Exchange</span>
-    </h1>
-    <p class="hero-sub">A private portfolio exchange — tracking every rupee, every share, every chapter of the market journey. Built with obsession.</p>
-    <div class="hero-cta">
-      <a href="explore.html" class="btn-pink">Explore Portfolio →</a>
-      <a href="history.html" class="btn-ghost">View History</a>
-    </div>
-
-    <!-- Index Card -->
-    <div class="index-hero-card">
-      <div class="ihc-label"><span class="live-dot"></span> CSE Composite Index</div>
-      <div class="ihc-value" id="ihc-val">1,847.32</div>
-      <div class="ihc-change">
-        <span class="pill up" id="ihc-pill">▲ +12.45 (+0.68%)</span>
-        <span style="font-size:0.7rem;color:var(--text-dimmer)">today</span>
-      </div>
-      <div class="ihc-divider"></div>
-      <canvas id="heroMiniChart" height="60"></canvas>
-      <div class="ihc-divider"></div>
-      <div class="ihc-stats">
-        <div>
-          <div class="ihc-stat-label">Total Invested</div>
-          <div class="ihc-stat-val">₹4.85L</div>
+    <!-- ——— TICKER TAPE ——— -->
+    <div class="ticker-tape">
+        <div class="ticker-inner" id="ticker">
+            <!-- Populated by JS -->
         </div>
-        <div>
-          <div class="ihc-stat-label">Current Value</div>
-          <div class="ihc-stat-val">₹6.12L</div>
+    </div>
+
+    <!-- ——— NAV ——— -->
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <span class="nav-logo-main"><span>C</span>SE</span>
+            <span class="nav-logo-sub">christania stock exchange</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Index</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="history.html">History</a></li>
+        </ul>
+        <div class="nav-ticker" id="nav-ticker">
+            <span class="live-dot"></span>
+            <span class="mono" id="nav-index">CSEC <span class="up">1847.32</span></span>
         </div>
-        <div>
-          <div class="ihc-stat-label">Total Return</div>
-          <div class="ihc-stat-val" style="color:var(--green)">+26.27%</div>
+    </nav>
+
+    <div class="page">
+
+        <!-- ——— HERO ——— -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-bg-grid"></div>
+
+            <div class="hero-eyebrow">// personal market intelligence</div>
+            <h1 class="hero-title">
+                Christania<br>
+                <span class="wild">Stock Exchange</span>
+            </h1>
+            <p class="hero-sub">A private portfolio exchange — tracking every rupee, every share, every chapter of the
+                market journey. Built with obsession.</p>
+            <div class="hero-cta">
+                <a href="explore.html" class="btn-pink">Explore Portfolio →</a>
+                <a href="history.html" class="btn-ghost">View History</a>
+            </div>
+
+            <!-- Index Card -->
+            <div class="index-hero-card">
+                <div class="ihc-label"><span class="live-dot"></span> CSE Composite Index</div>
+                <div class="ihc-value" id="ihc-val">1,847.32</div>
+                <div class="ihc-change">
+                    <span class="pill up" id="ihc-pill">▲ +12.45 (+0.68%)</span>
+                    <span style="font-size:0.7rem;color:var(--text-dimmer)">today</span>
+                </div>
+                <div class="ihc-divider"></div>
+                <canvas id="heroMiniChart" height="60"></canvas>
+                <div class="ihc-divider"></div>
+                <div class="ihc-stats">
+                    <div>
+                        <div class="ihc-stat-label">Total Invested</div>
+                        <div class="ihc-stat-val">₹4.85L</div>
+                    </div>
+                    <div>
+                        <div class="ihc-stat-label">Current Value</div>
+                        <div class="ihc-stat-val">₹6.12L</div>
+                    </div>
+                    <div>
+                        <div class="ihc-stat-label">Total Return</div>
+                        <div class="ihc-stat-val" style="color:var(--green)">+26.27%</div>
+                    </div>
+                    <div>
+                        <div class="ihc-stat-label">Holdings</div>
+                        <div class="ihc-stat-val">8</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ——— STATS ROW ——— -->
+        <div class="stats-row animate-up-1">
+            <div class="stat-block" data-index="01">
+                <div class="stat-label">Portfolio Value</div>
+                <div class="stat-value">₹6.12L</div>
+                <div class="stat-sub" style="color:var(--green)">↑ +26.27% all time</div>
+            </div>
+            <div class="stat-block" data-index="02">
+                <div class="stat-label">Total Invested</div>
+                <div class="stat-value">₹4.85L</div>
+                <div class="stat-sub">Across 31 transactions</div>
+            </div>
+            <div class="stat-block" data-index="03">
+                <div class="stat-label">Dividends Earned</div>
+                <div class="stat-value">₹21,070</div>
+                <div class="stat-sub">Lifetime passive income</div>
+            </div>
+            <div class="stat-block" data-index="04">
+                <div class="stat-label">Total Shares</div>
+                <div class="stat-value">565</div>
+                <div class="stat-sub">Across 8 companies</div>
+            </div>
         </div>
-        <div>
-          <div class="ihc-stat-label">Holdings</div>
-          <div class="ihc-stat-val">8</div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ——— STATS ROW ——— -->
-  <div class="stats-row animate-up-1">
-    <div class="stat-block" data-index="01">
-      <div class="stat-label">Portfolio Value</div>
-      <div class="stat-value">₹6.12L</div>
-      <div class="stat-sub" style="color:var(--green)">↑ +26.27% all time</div>
-    </div>
-    <div class="stat-block" data-index="02">
-      <div class="stat-label">Total Invested</div>
-      <div class="stat-value">₹4.85L</div>
-      <div class="stat-sub">Across 31 transactions</div>
-    </div>
-    <div class="stat-block" data-index="03">
-      <div class="stat-label">Dividends Earned</div>
-      <div class="stat-value">₹21,070</div>
-      <div class="stat-sub">Lifetime passive income</div>
-    </div>
-    <div class="stat-block" data-index="04">
-      <div class="stat-label">Total Shares</div>
-      <div class="stat-value">565</div>
-      <div class="stat-sub">Across 8 companies</div>
-    </div>
-  </div>
+        <!-- ——— HOLDINGS PREVIEW ——— -->
+        <section class="section animate-up-2">
+            <div class="section-header">
+                <div>
+                    <div class="section-eyebrow">// portfolio snapshot</div>
+                    <h2 class="section-title">Holdings</h2>
+                </div>
+                <a href="explore.html" class="btn-ghost">Full View →</a>
+            </div>
+            <div class="accent-line"></div>
+            <table class="holdings-table" id="holdingsTable">
+                <thead>
+                    <tr>
+                        <th>Stock</th>
+                        <th>Sector</th>
+                        <th>Shares</th>
+                        <th>Avg Price</th>
+                        <th>Current</th>
+                        <th>Return</th>
+                        <th>Weight</th>
+                        <th>Today</th>
+                    </tr>
+                </thead>
+                <tbody id="holdingsBody">
+                </tbody>
+            </table>
+        </section>
 
-  <!-- ——— HOLDINGS PREVIEW ——— -->
-  <section class="section animate-up-2">
-    <div class="section-header">
-      <div>
-        <div class="section-eyebrow">// portfolio snapshot</div>
-        <h2 class="section-title">Holdings</h2>
-      </div>
-      <a href="explore.html" class="btn-ghost">Full View →</a>
+        <!-- ——— SECTOR BREAKDOWN ——— -->
+        <section class="section animate-up-3" style="padding-top:0">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+                <div>
+                    <div class="section-eyebrow">// allocation</div>
+                    <h2 class="section-title" style="font-size:1.8rem">Sector Breakdown</h2>
+                    <div class="accent-line" style="margin-top:1rem"></div>
+                    <div class="sector-list" id="sectorList"></div>
+                </div>
+                <div>
+                    <div class="section-eyebrow">// relative weights</div>
+                    <h2 class="section-title" style="font-size:1.8rem">Concentration</h2>
+                    <div class="accent-line" style="margin-top:1rem"></div>
+                    <canvas id="sectorChart" height="200"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ——— OVER THE YEARS BOX ——— -->
+        <a href="history.html" class="years-box animate-up-4">
+            <div class="yb-left">
+                <div class="yb-eyebrow">// the chronicles</div>
+                <div class="yb-title">Over the<br>Years</div>
+                <div class="yb-desc">Quarterly dividends, market events, share accumulation — every year documented in
+                    full.</div>
+            </div>
+            <div class="yb-right">
+                <div class="yb-years">
+                    <div class="yb-year-chip">2024</div>
+                    <div class="yb-year-chip">2025</div>
+                    <div class="yb-year-chip" style="opacity:0.4">2026</div>
+                </div>
+                <div class="yb-arrow">→</div>
+            </div>
+        </a>
+
     </div>
-    <div class="accent-line"></div>
-    <table class="holdings-table" id="holdingsTable">
-      <thead>
-        <tr>
-          <th>Stock</th>
-          <th>Sector</th>
-          <th>Shares</th>
-          <th>Avg Price</th>
-          <th>Current</th>
-          <th>Return</th>
-          <th>Weight</th>
-          <th>Today</th>
-        </tr>
-      </thead>
-      <tbody id="holdingsBody">
-      </tbody>
-    </table>
-  </section>
 
-  <!-- ——— SECTOR BREAKDOWN ——— -->
-  <section class="section animate-up-3" style="padding-top:0">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
-      <div>
-        <div class="section-eyebrow">// allocation</div>
-        <h2 class="section-title" style="font-size:1.8rem">Sector Breakdown</h2>
-        <div class="accent-line" style="margin-top:1rem"></div>
-        <div class="sector-list" id="sectorList"></div>
-      </div>
-      <div>
-        <div class="section-eyebrow">// relative weights</div>
-        <h2 class="section-title" style="font-size:1.8rem">Concentration</h2>
-        <div class="accent-line" style="margin-top:1rem"></div>
-        <canvas id="sectorChart" height="200"></canvas>
-      </div>
-    </div>
-  </section>
+    <!-- ——— FOOTER ——— -->
+    <footer>
+        <div class="f-left">Christania Stock Exchange — a personal archive.</div>
+        <div class="f-right">Made with 💖 by Joel Jolly · <span id="fdate"></span></div>
+    </footer>
 
-  <!-- ——— OVER THE YEARS BOX ——— -->
-  <a href="history.html" class="years-box animate-up-4">
-    <div class="yb-left">
-      <div class="yb-eyebrow">// the chronicles</div>
-      <div class="yb-title">Over the<br>Years</div>
-      <div class="yb-desc">Quarterly dividends, market events, share accumulation — every year documented in full.</div>
-    </div>
-    <div class="yb-right">
-      <div class="yb-years">
-        <div class="yb-year-chip">2024</div>
-        <div class="yb-year-chip">2025</div>
-        <div class="yb-year-chip" style="opacity:0.4">2026</div>
-      </div>
-      <div class="yb-arrow">→</div>
-    </div>
-  </a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script>
+        // ——— DATA ———
+        const portfolio = {
+            holdings: [
+                { ticker: "RELIANCE", name: "Reliance Industries", sector: "Energy", shares: 42, avgPrice: 2840.50, currentPrice: 3120.75, weightage: 21.2, dayChange: 0.85 },
+                { ticker: "TCS", name: "Tata Consultancy Services", sector: "IT Services", shares: 28, avgPrice: 3680.00, currentPrice: 4210.30, weightage: 18.9, dayChange: 1.24 },
+                { ticker: "INFY", name: "Infosys Ltd", sector: "IT Services", shares: 55, avgPrice: 1420.00, currentPrice: 1780.50, weightage: 15.7, dayChange: -0.32 },
+                { ticker: "HDFCBANK", name: "HDFC Bank Ltd", sector: "Banking", shares: 38, avgPrice: 1560.00, currentPrice: 1720.80, weightage: 13.2, dayChange: 0.54 },
+                { ticker: "BAJFINANCE", name: "Bajaj Finance Ltd", sector: "Finance", shares: 12, avgPrice: 6800.00, currentPrice: 7450.20, weightage: 14.3, dayChange: 1.05 },
+                { ticker: "WIPRO", name: "Wipro Ltd", sector: "IT Services", shares: 90, avgPrice: 520.00, currentPrice: 635.40, weightage: 9.2, dayChange: -0.78 },
+                { ticker: "TATASTEEL", name: "Tata Steel Ltd", sector: "Metals", shares: 180, avgPrice: 145.00, currentPrice: 162.80, weightage: 4.7, dayChange: -1.22 },
+                { ticker: "ZOMATO", name: "Zomato Ltd", sector: "Consumer Tech", shares: 320, avgPrice: 110.00, currentPrice: 198.40, weightage: 2.8, dayChange: 2.14 }
+            ],
+            sectors: [
+                { name: "IT Services", weightage: 43.8, color: "#FF2E63" },
+                { name: "Banking & Finance", weightage: 27.5, color: "#00e5a0" },
+                { name: "Energy", weightage: 21.2, color: "#ffd700" },
+                { name: "Metals", weightage: 4.7, color: "#a78bfa" },
+                { name: "Consumer Tech", weightage: 2.8, color: "#60a5fa" }
+            ]
+        };
 
-</div>
+        // ——— TICKER TAPE ———
+        const tickerData = portfolio.holdings.map(h => {
+            const sign = h.dayChange >= 0 ? '▲' : '▼';
+            const col = h.dayChange >= 0 ? '#00e5a0' : '#FF2E63';
+            return `<span class="ticker-item">${h.ticker} <span style="color:${col}">${sign} ${Math.abs(h.dayChange).toFixed(2)}%</span> <span class="sep">|</span> ₹${h.currentPrice.toLocaleString()}</span>`;
+        }).join('');
+        const inner = document.getElementById('ticker');
+        inner.innerHTML = tickerData + tickerData; // duplicate for seamless loop
 
-<!-- ——— FOOTER ——— -->
-<footer>
-  <div class="f-left">Christania Stock Exchange — a personal archive.</div>
-  <div class="f-right">Made with 💖 by Joel Jolly · <span id="fdate"></span></div>
-</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-<script>
-// ——— DATA ———
-const portfolio = {
-  holdings: [
-    { ticker:"RELIANCE", name:"Reliance Industries", sector:"Energy", shares:42, avgPrice:2840.50, currentPrice:3120.75, weightage:21.2, dayChange:0.85 },
-    { ticker:"TCS", name:"Tata Consultancy Services", sector:"IT Services", shares:28, avgPrice:3680.00, currentPrice:4210.30, weightage:18.9, dayChange:1.24 },
-    { ticker:"INFY", name:"Infosys Ltd", sector:"IT Services", shares:55, avgPrice:1420.00, currentPrice:1780.50, weightage:15.7, dayChange:-0.32 },
-    { ticker:"HDFCBANK", name:"HDFC Bank Ltd", sector:"Banking", shares:38, avgPrice:1560.00, currentPrice:1720.80, weightage:13.2, dayChange:0.54 },
-    { ticker:"BAJFINANCE", name:"Bajaj Finance Ltd", sector:"Finance", shares:12, avgPrice:6800.00, currentPrice:7450.20, weightage:14.3, dayChange:1.05 },
-    { ticker:"WIPRO", name:"Wipro Ltd", sector:"IT Services", shares:90, avgPrice:520.00, currentPrice:635.40, weightage:9.2, dayChange:-0.78 },
-    { ticker:"TATASTEEL", name:"Tata Steel Ltd", sector:"Metals", shares:180, avgPrice:145.00, currentPrice:162.80, weightage:4.7, dayChange:-1.22 },
-    { ticker:"ZOMATO", name:"Zomato Ltd", sector:"Consumer Tech", shares:320, avgPrice:110.00, currentPrice:198.40, weightage:2.8, dayChange:2.14 }
-  ],
-  sectors: [
-    { name:"IT Services", weightage:43.8, color:"#FF2E63" },
-    { name:"Banking & Finance", weightage:27.5, color:"#00e5a0" },
-    { name:"Energy", weightage:21.2, color:"#ffd700" },
-    { name:"Metals", weightage:4.7, color:"#a78bfa" },
-    { name:"Consumer Tech", weightage:2.8, color:"#60a5fa" }
-  ]
-};
-
-// ——— TICKER TAPE ———
-const tickerData = portfolio.holdings.map(h => {
-  const sign = h.dayChange >= 0 ? '▲' : '▼';
-  const col = h.dayChange >= 0 ? '#00e5a0' : '#FF2E63';
-  return `<span class="ticker-item">${h.ticker} <span style="color:${col}">${sign} ${Math.abs(h.dayChange).toFixed(2)}%</span> <span class="sep">|</span> ₹${h.currentPrice.toLocaleString()}</span>`;
-}).join('');
-const inner = document.getElementById('ticker');
-inner.innerHTML = tickerData + tickerData; // duplicate for seamless loop
-
-// ——— HOLDINGS TABLE ———
-const tbody = document.getElementById('holdingsBody');
-portfolio.holdings.forEach(h => {
-  const ret = ((h.currentPrice - h.avgPrice) / h.avgPrice * 100).toFixed(2);
-  const retPos = parseFloat(ret) >= 0;
-  const dayPos = h.dayChange >= 0;
-  tbody.innerHTML += `
+        // ——— HOLDINGS TABLE ———
+        const tbody = document.getElementById('holdingsBody');
+        portfolio.holdings.forEach(h => {
+            const ret = ((h.currentPrice - h.avgPrice) / h.avgPrice * 100).toFixed(2);
+            const retPos = parseFloat(ret) >= 0;
+            const dayPos = h.dayChange >= 0;
+            tbody.innerHTML += `
     <tr>
       <td>
         <div class="h-ticker">${h.ticker}</div>
@@ -640,12 +763,12 @@ portfolio.holdings.forEach(h => {
       </td>
     </tr>
   `;
-});
+        });
 
-// ——— SECTOR LIST ———
-const sectorList = document.getElementById('sectorList');
-portfolio.sectors.forEach(s => {
-  sectorList.innerHTML += `
+        // ——— SECTOR LIST ———
+        const sectorList = document.getElementById('sectorList');
+        portfolio.sectors.forEach(s => {
+            sectorList.innerHTML += `
     <div class="sector-item">
       <div class="sector-dot" style="background:${s.color}"></div>
       <div class="sector-name">${s.name}</div>
@@ -655,73 +778,74 @@ portfolio.sectors.forEach(s => {
       <div class="sector-pct">${s.weightage}%</div>
     </div>
   `;
-});
+        });
 
-// ——— MINI HERO CHART ———
-const heroCtx = document.getElementById('heroMiniChart').getContext('2d');
-function genWalk(n, start, vol) {
-  const arr = [start];
-  for (let i = 1; i < n; i++) arr.push(+(arr[i-1] + (Math.random()-0.48)*vol).toFixed(2));
-  return arr;
-}
-const miniData = genWalk(60, 1780, 8);
-miniData[miniData.length-1] = 1847.32;
-new Chart(heroCtx, {
-  type: 'line',
-  data: {
-    labels: miniData.map((_,i) => i),
-    datasets: [{
-      data: miniData,
-      borderColor: '#FF2E63',
-      borderWidth: 1.5,
-      fill: true,
-      backgroundColor: (ctx) => {
-        const g = ctx.chart.ctx.createLinearGradient(0,0,0,60);
-        g.addColorStop(0, 'rgba(255,46,99,0.15)');
-        g.addColorStop(1, 'rgba(255,46,99,0)');
-        return g;
-      },
-      tension: 0.4,
-      pointRadius: 0
-    }]
-  },
-  options: { responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false}, y:{display:false}} }
-});
-
-// ——— SECTOR DOUGHNUT ———
-const sCtx = document.getElementById('sectorChart').getContext('2d');
-new Chart(sCtx, {
-  type: 'doughnut',
-  data: {
-    labels: portfolio.sectors.map(s => s.name),
-    datasets: [{
-      data: portfolio.sectors.map(s => s.weightage),
-      backgroundColor: portfolio.sectors.map(s => s.color),
-      borderColor: '#080810',
-      borderWidth: 3,
-      hoverBorderWidth: 0
-    }]
-  },
-  options: {
-    responsive: true,
-    cutout: '65%',
-    plugins: {
-      legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          color: 'rgba(240,240,248,0.5)',
-          font: { family: 'JetBrains Mono', size: 10 },
-          boxWidth: 10,
-          padding: 12
+        // ——— MINI HERO CHART ———
+        const heroCtx = document.getElementById('heroMiniChart').getContext('2d');
+        function genWalk(n, start, vol) {
+            const arr = [start];
+            for (let i = 1; i < n; i++) arr.push(+(arr[i - 1] + (Math.random() - 0.48) * vol).toFixed(2));
+            return arr;
         }
-      }
-    }
-  }
-});
+        const miniData = genWalk(60, 1780, 8);
+        miniData[miniData.length - 1] = 1847.32;
+        new Chart(heroCtx, {
+            type: 'line',
+            data: {
+                labels: miniData.map((_, i) => i),
+                datasets: [{
+                    data: miniData,
+                    borderColor: '#FF2E63',
+                    borderWidth: 1.5,
+                    fill: true,
+                    backgroundColor: (ctx) => {
+                        const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 60);
+                        g.addColorStop(0, 'rgba(255,46,99,0.15)');
+                        g.addColorStop(1, 'rgba(255,46,99,0)');
+                        return g;
+                    },
+                    tension: 0.4,
+                    pointRadius: 0
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+        });
 
-// ——— FOOTER DATE ———
-document.getElementById('fdate').textContent = new Date().toLocaleDateString('en-IN', {year:'numeric',month:'long'});
-</script>
+        // ——— SECTOR DOUGHNUT ———
+        const sCtx = document.getElementById('sectorChart').getContext('2d');
+        new Chart(sCtx, {
+            type: 'doughnut',
+            data: {
+                labels: portfolio.sectors.map(s => s.name),
+                datasets: [{
+                    data: portfolio.sectors.map(s => s.weightage),
+                    backgroundColor: portfolio.sectors.map(s => s.color),
+                    borderColor: '#080810',
+                    borderWidth: 3,
+                    hoverBorderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            color: 'rgba(240,240,248,0.5)',
+                            font: { family: 'JetBrains Mono', size: 10 },
+                            boxWidth: 10,
+                            padding: 12
+                        }
+                    }
+                }
+            }
+        });
+
+        // ——— FOOTER DATE ———
+        document.getElementById('fdate').textContent = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long' });
+    </script>
 </body>
+
 </html>
