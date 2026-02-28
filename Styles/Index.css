@@ -484,6 +484,13 @@
     border-radius: 4px;
 }
 
+/* ——— TOP PERFORMERS ——— */
+.holdings-card-mini:hover {
+    border-color: var(--pink) !important;
+    background: rgba(255, 46, 99, 0.04) !important;
+    transform: translateY(-2px);
+}
+
 /* ——— MINI CHART ——— */
 .mini-chart-wrap {
     position: relative;
