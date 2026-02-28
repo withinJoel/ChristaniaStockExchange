@@ -1,0 +1,32 @@
+{
+  "index": {
+    "name": "CSE Composite",
+    "ticker": "CSEC",
+    "current": 1847.32,
+    "change": 12.45,
+    "changePct": 0.68,
+    "allTimeHigh": 1902.10,
+    "allTimeLow": 1000.00,
+    "inceptionDate": "2024-01-01",
+    "totalInvested": 485000,
+    "currentValue": 612400,
+    "totalReturn": 26.27
+  },
+  "holdings": [
+    { "ticker": "RELIANCE", "name": "Reliance Industries", "sector": "Energy & Petrochem", "shares": 42, "avgPrice": 2840.50, "currentPrice": 3120.75, "weightage": 21.2, "dayChange": 0.85 },
+    { "ticker": "TCS", "name": "Tata Consultancy Services", "sector": "IT Services", "shares": 28, "avgPrice": 3680.00, "currentPrice": 4210.30, "weightage": 18.9, "dayChange": 1.24 },
+    { "ticker": "INFY", "name": "Infosys Ltd", "sector": "IT Services", "shares": 55, "avgPrice": 1420.00, "currentPrice": 1780.50, "weightage": 15.7, "dayChange": -0.32 },
+    { "ticker": "HDFCBANK", "name": "HDFC Bank Ltd", "sector": "Banking & Finance", "shares": 38, "avgPrice": 1560.00, "currentPrice": 1720.80, "weightage": 13.2, "dayChange": 0.54 },
+    { "ticker": "WIPRO", "name": "Wipro Ltd", "sector": "IT Services", "shares": 90, "avgPrice": 520.00, "currentPrice": 635.40, "weightage": 9.2, "dayChange": -0.78 },
+    { "ticker": "BAJFINANCE", "name": "Bajaj Finance Ltd", "sector": "NBFC & Finance", "shares": 12, "avgPrice": 6800.00, "currentPrice": 7450.20, "weightage": 14.3, "dayChange": 1.05 },
+    { "ticker": "TATASTEEL", "name": "Tata Steel Ltd", "sector": "Metals & Mining", "shares": 180, "avgPrice": 145.00, "currentPrice": 162.80, "weightage": 4.7, "dayChange": -1.22 },
+    { "ticker": "ZOMATO", "name": "Zomato Ltd", "sector": "Consumer Tech", "shares": 320, "avgPrice": 110.00, "currentPrice": 198.40, "weightage": 2.8, "dayChange": 2.14 }
+  ],
+  "sectors": [
+    { "name": "IT Services", "weightage": 43.8, "color": "#FF2E63" },
+    { "name": "Banking & Finance", "weightage": 27.5, "color": "#00e5a0" },
+    { "name": "Energy & Petrochem", "weightage": 21.2, "color": "#ffd700" },
+    { "name": "Metals & Mining", "weightage": 4.7, "color": "#a78bfa" },
+    { "name": "Consumer Tech", "weightage": 2.8, "color": "#60a5fa" }
+  ]
+}

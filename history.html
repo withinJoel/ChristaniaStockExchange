@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History — CSE</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .history-hero {
+      padding: 5rem 2.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .history-hero::before {
+      content: 'HISTORY';
+      position: absolute;
+      right: -2rem; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(6rem, 15vw, 12rem);
+      letter-spacing: -0.05em;
+      color: rgba(255,255,255,0.02);
+      pointer-events: none;
+      text-transform: uppercase;
+    }
+
+    .timeline-section {
+      padding: 4rem 2.5rem;
+    }
+
+    /* ——— YEAR CARDS ——— */
+    .years-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .year-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .year-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(255,46,99,0.08), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .year-card:hover { border-color: var(--border-pink); transform: translateY(-2px); }
+    .year-card:hover::before { opacity: 1; }
+    .year-card:hover .yc-arrow { transform: translateX(4px); color: var(--pink); }
+
+    .year-card.inactive {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .yc-header {
+      padding: 2rem 2rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .yc-year {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 3.5rem;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .yc-status {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.3rem;
+    }
+    .yc-return {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .yc-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dimmer);
+    }
+
+    .yc-body {
+      padding: 1.5rem 2rem;
+    }
+    .yc-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .yc-stat-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dimmer);
+      margin-bottom: 0.2rem;
+    }
+    .yc-stat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .yc-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .yc-highlight {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+    .yc-highlight::before {
+      content: '→';
+      color: var(--pink);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .yc-footer {
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .yc-cta {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--pink);
+    }
+    .yc-arrow {
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      transition: all 0.2s;
+    }
+
+    /* ——— COMING SOON CARD ——— */
+    .year-card-coming {
+      background: transparent;
+      border: 1px dashed var(--border);
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+    .ycc-year {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.1);
+    }
+    .ycc-label {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text-dimmer);
+    }
+
+    /* ——— OVERVIEW STRIP ——— */
+    .overview-strip {
+      margin: 0 2.5rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+    }
+    .os-item {
+      padding: 0 1.5rem;
+      border-right: 1px solid var(--border);
+    }
+    .os-item:first-child { padding-left: 0; }
+    .os-item:last-child { border-right: none; }
+    .os-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dimmer);
+      margin-bottom: 0.4rem;
+    }
+    .os-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+    .os-sub {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.72rem;
+      color: var(--text-dimmer);
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .overview-strip { grid-template-columns: 1fr 1fr; }
+      .os-item { border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 0; }
+      .timeline-section { padding: 2rem 1.2rem; }
+      .overview-strip { margin: 0 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-main"><span>C</span>SE</span>
+    <span class="nav-logo-sub">christania stock exchange</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Index</a></li>
+    <li><a href="explore.html">Explore</a></li>
+    <li><a href="history.html" class="active">History</a></li>
+  </ul>
+  <div class="nav-ticker">
+    <span class="live-dot"></span>
+    <span class="mono">CSEC <span class="up">1847.32</span></span>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ——— HERO ——— -->
+  <div class="history-hero animate-up">
+    <div class="section-eyebrow">// the chronicles</div>
+    <h1 class="section-title" style="font-size:clamp(3rem,7vw,6rem)">Over the<br>Years</h1>
+    <p style="margin-top:1rem;color:var(--text-dim);max-width:500px;font-size:0.9rem;line-height:1.7">
+      Every year. Every quarter. Every rupee. Every major event. The full story of the Christania portfolio, documented chapter by chapter.
+    </p>
+  </div>
+
+  <!-- ——— OVERVIEW STRIP ——— -->
+  <div class="overview-strip animate-up-1">
+    <div class="os-item">
+      <div class="os-label">Years Active</div>
+      <div class="os-val">2</div>
+      <div class="os-sub">since Jan 2024</div>
+    </div>
+    <div class="os-item">
+      <div class="os-label">Total Invested</div>
+      <div class="os-val">₹4.85L</div>
+      <div class="os-sub">across all years</div>
+    </div>
+    <div class="os-item">
+      <div class="os-label">Total Dividends</div>
+      <div class="os-val">₹21,070</div>
+      <div class="os-sub">passive income earned</div>
+    </div>
+    <div class="os-item">
+      <div class="os-label">Shares Accumulated</div>
+      <div class="os-val">565</div>
+      <div class="os-sub">across 8 companies</div>
+    </div>
+  </div>
+
+  <!-- ——— YEAR CARDS ——— -->
+  <div class="timeline-section animate-up-2">
+    <div class="section-eyebrow">// select a year</div>
+    <h2 class="section-title">Annual Records</h2>
+    <div class="accent-line" style="margin-top:0.8rem"></div>
+
+    <div class="years-grid">
+      
+      <!-- 2024 -->
+      <a href="year.html?year=2024" class="year-card">
+        <div class="yc-header">
+          <div>
+            <div class="yc-year">2024</div>
+            <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--text-dim);margin-top:0.2rem">inception year</div>
+          </div>
+          <div class="yc-status">
+            <div class="yc-return" style="color:var(--green)">+14.2%</div>
+            <div class="yc-label">Annual Return</div>
+          </div>
+        </div>
+        <div class="yc-body">
+          <div class="yc-stats">
+            <div>
+              <div class="yc-stat-label">Shares Bought</div>
+              <div class="yc-stat-val">423</div>
+            </div>
+            <div>
+              <div class="yc-stat-label">Invested</div>
+              <div class="yc-stat-val">₹4.85L</div>
+            </div>
+            <div>
+              <div class="yc-stat-label">Dividends</div>
+              <div class="yc-stat-val">₹8,420</div>
+            </div>
+          </div>
+          <div class="yc-highlights">
+            <div class="yc-highlight">Portfolio launched in January with ₹2L seed capital</div>
+            <div class="yc-highlight">First dividend from RELIANCE — ₹1,840 in April</div>
+            <div class="yc-highlight">ZOMATO added in December at ₹110 avg</div>
+            <div class="yc-highlight">Year closed at +14.2% annual return</div>
+          </div>
+        </div>
+        <div class="yc-footer">
+          <div class="yc-cta">View Full Year</div>
+          <div class="yc-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- 2025 -->
+      <a href="year.html?year=2025" class="year-card">
+        <div class="yc-header">
+          <div>
+            <div class="yc-year">2025</div>
+            <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--text-dim);margin-top:0.2rem">growth year</div>
+          </div>
+          <div class="yc-status">
+            <div class="yc-return" style="color:var(--green)">+11.8%</div>
+            <div class="yc-label">Annual Return</div>
+          </div>
+        </div>
+        <div class="yc-body">
+          <div class="yc-stats">
+            <div>
+              <div class="yc-stat-label">Shares Bought</div>
+              <div class="yc-stat-val">142</div>
+            </div>
+            <div>
+              <div class="yc-stat-label">Invested</div>
+              <div class="yc-stat-val">₹1.27L</div>
+            </div>
+            <div>
+              <div class="yc-stat-label">Dividends</div>
+              <div class="yc-stat-val">₹12,650</div>
+            </div>
+          </div>
+          <div class="yc-highlights">
+            <div class="yc-highlight">Portfolio crossed ₹6L valuation milestone in June</div>
+            <div class="yc-highlight">Best IT quarter — TCS & INFY surged in Q2</div>
+            <div class="yc-highlight">ZOMATO profitability confirmed — +22% in November</div>
+            <div class="yc-highlight">All-time high of ₹6.2L reached in December</div>
+          </div>
+        </div>
+        <div class="yc-footer">
+          <div class="yc-cta">View Full Year</div>
+          <div class="yc-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- 2026 Coming Soon -->
+      <div class="year-card year-card-coming">
+        <div class="ycc-year">2026</div>
+        <div class="ycc-label">in progress — chapter unfolding</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="f-left">Christania Stock Exchange — a personal archive.</div>
+  <div class="f-right">Made with 💖 by Joel Jolly</div>
+</footer>
+
+</body>
+</html>

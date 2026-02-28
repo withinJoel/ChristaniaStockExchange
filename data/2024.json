@@ -1,0 +1,72 @@
+{
+  "year": 2024,
+  "summary": {
+    "totalSharesBought": 423,
+    "totalInvested": 485000,
+    "portfolioReturn": 14.2,
+    "dividendsReceived": 8420,
+    "bestPerformer": "ZOMATO",
+    "worstPerformer": "TATASTEEL",
+    "numberOfTransactions": 31,
+    "portfolioStartValue": 0,
+    "portfolioEndValue": 485000
+  },
+  "quarters": [
+    {
+      "quarter": "Q1",
+      "label": "Jan — Mar 2024",
+      "dividends": 0,
+      "note": "Portfolio inception. Initial capital deployed.",
+      "sharesAdded": 165,
+      "invested": 198000,
+      "highlights": ["Portfolio launched with 5 core positions", "TCS added as anchor holding", "RELIANCE initial stake built"]
+    },
+    {
+      "quarter": "Q2",
+      "label": "Apr — Jun 2024",
+      "dividends": 1840,
+      "note": "First dividends received from RELIANCE.",
+      "sharesAdded": 102,
+      "invested": 142000,
+      "highlights": ["First dividend payout ₹1,840", "HDFCBANK added to portfolio", "Portfolio up 6.2% from inception"]
+    },
+    {
+      "quarter": "Q3",
+      "label": "Jul — Sep 2024",
+      "dividends": 2950,
+      "note": "Strong IT sector performance boosts portfolio.",
+      "sharesAdded": 89,
+      "invested": 98000,
+      "highlights": ["IT sector surge — TCS & INFY up 12%", "BAJFINANCE initiated", "Portfolio crosses ₹4L mark"]
+    },
+    {
+      "quarter": "Q4",
+      "label": "Oct — Dec 2024",
+      "dividends": 3630,
+      "note": "Year-end rebalancing. ZOMATO added.",
+      "sharesAdded": 67,
+      "invested": 47000,
+      "highlights": ["ZOMATO added at ₹110 avg", "Portfolio rebalanced — IT weight reduced", "Year closes at +14.2% return"]
+    }
+  ],
+  "monthlyEvents": [
+    { "month": "January", "event": "Portfolio launched. ₹2L deployed across RELIANCE, TCS, INFY.", "type": "buy", "impact": "positive" },
+    { "month": "February", "event": "Additional RELIANCE shares purchased on dip.", "type": "buy", "impact": "positive" },
+    { "month": "March", "event": "WIPRO added. IT sector gaining momentum.", "type": "buy", "impact": "positive" },
+    { "month": "April", "event": "First dividend from RELIANCE received — ₹1,840.", "type": "dividend", "impact": "positive" },
+    { "month": "May", "event": "General election results — market volatile. Held positions.", "type": "watchlist", "impact": "neutral" },
+    { "month": "June", "event": "Post-election rally. Portfolio up 8% from inception.", "type": "milestone", "impact": "positive" },
+    { "month": "July", "event": "HDFCBANK added. Banking sector undervalued.", "type": "buy", "impact": "positive" },
+    { "month": "August", "event": "Global selloff — Nikkei crash ripples to NSE. Bought the dip on TCS.", "type": "buy", "impact": "positive" },
+    { "month": "September", "event": "BAJFINANCE initiated. Strong NBFC thesis.", "type": "buy", "impact": "positive" },
+    { "month": "October", "event": "Q2 results season. TCS beats estimates — strong buy signal.", "type": "watchlist", "impact": "positive" },
+    { "month": "November", "event": "US elections — global markets rally. Portfolio gains ₹40K in a week.", "type": "milestone", "impact": "positive" },
+    { "month": "December", "event": "ZOMATO added at ₹110. Year-end rebalancing completed.", "type": "buy", "impact": "positive" }
+  ],
+  "topMoments": [
+    { "icon": "🚀", "title": "Portfolio Launch", "desc": "CSE went live in January 2024 with ₹2L seed capital." },
+    { "icon": "💰", "title": "First Dividend", "desc": "₹1,840 from RELIANCE — the first passive income hit." },
+    { "icon": "📈", "title": "Post-election Rally", "desc": "Portfolio surged 8% in a single week post June results." },
+    { "icon": "⚡", "title": "Aug Dip Mastery", "desc": "Bought TCS during global panic. Paid off by September." }
+  ]
+}
