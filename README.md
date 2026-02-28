@@ -1,4 +1,4 @@
-# {Project Name}
+# Christania Stock Exchange
 * {a short intro}
 * Made with 💖 by Joel Jolly.
 
