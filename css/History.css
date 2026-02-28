@@ -1,0 +1,278 @@
+.history-hero {
+    padding: 5rem 2.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.history-hero::before {
+    content: 'HISTORY';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(6rem, 15vw, 12rem);
+    letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.02);
+    pointer-events: none;
+    text-transform: uppercase;
+}
+
+.timeline-section {
+    padding: 4rem 2.5rem;
+}
+
+/* ——— YEAR CARDS ——— */
+.years-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.year-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.year-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top left, rgba(255, 46, 99, 0.08), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.year-card:hover {
+    border-color: var(--border-pink);
+    transform: translateY(-2px);
+}
+
+.year-card:hover::before {
+    opacity: 1;
+}
+
+.year-card:hover .yc-arrow {
+    transform: translateX(4px);
+    color: var(--pink);
+}
+
+.year-card.inactive {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.yc-header {
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.yc-year {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 3.5rem;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.yc-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+}
+
+.yc-return {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.yc-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+}
+
+.yc-body {
+    padding: 1.5rem 2rem;
+}
+
+.yc-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.yc-stat-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.2rem;
+}
+
+.yc-stat-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.yc-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.yc-highlight {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
+
+.yc-highlight::before {
+    content: '→';
+    color: var(--pink);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.yc-footer {
+    padding: 1rem 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.yc-cta {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pink);
+}
+
+.yc-arrow {
+    font-size: 1.2rem;
+    color: var(--text-dim);
+    transition: all 0.2s;
+}
+
+/* ——— COMING SOON CARD ——— */
+.year-card-coming {
+    background: transparent;
+    border: 1px dashed var(--border);
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+.ycc-year {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    letter-spacing: -0.04em;
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.ycc-label {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--text-dimmer);
+}
+
+/* ——— OVERVIEW STRIP ——— */
+.overview-strip {
+    margin: 0 2.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+}
+
+.os-item {
+    padding: 0 1.5rem;
+    border-right: 1px solid var(--border);
+}
+
+.os-item:first-child {
+    padding-left: 0;
+}
+
+.os-item:last-child {
+    border-right: none;
+}
+
+.os-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.4rem;
+}
+
+.os-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.os-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    color: var(--text-dimmer);
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 768px) {
+    .overview-strip {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .os-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 0;
+    }
+
+    .timeline-section {
+        padding: 2rem 1.2rem;
+    }
+
+    .overview-strip {
+        margin: 0 1.2rem;
+    }
+}

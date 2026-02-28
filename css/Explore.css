@@ -1,0 +1,348 @@
+.explore-hero {
+    padding: 5rem 2.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.explore-hero-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.index-big-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.index-big-change {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.index-big-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.3rem;
+}
+
+.explore-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.explore-stat {
+    text-align: right;
+}
+
+.explore-stat-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.2rem;
+}
+
+.explore-stat-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+/* ——— CHART AREA ——— */
+.chart-section {
+    padding: 0 2.5rem;
+    background: var(--bg);
+}
+
+.chart-wrap {
+    position: relative;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 2rem 2rem 1rem;
+}
+
+.period-bar {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border-radius: 100px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    width: fit-content;
+}
+
+.period-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.period-btn:last-child {
+    border-right: none;
+}
+
+.period-btn:hover {
+    background: var(--surface2);
+    color: var(--text);
+}
+
+.period-btn.active {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: white;
+}
+
+.chart-canvas-wrap {
+    position: relative;
+    height: 320px;
+}
+
+.chart-overlay-val {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    opacity: 0;
+}
+
+.chart-overlay-date {
+    position: absolute;
+    top: 2.8rem;
+    left: 1rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    pointer-events: none;
+    transition: opacity 0.2s;
+    opacity: 0;
+}
+
+/* ——— HOLDINGS SECTION ——— */
+.holdings-section {
+    padding: 3rem 2.5rem;
+}
+
+.holdings-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.sort-bar {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sort-btn {
+    padding: 0.35rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--text-dim);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.sort-btn:hover,
+.sort-btn.active {
+    border-color: var(--pink);
+    color: var(--text);
+}
+
+/* ——— HOLDINGS CARDS ——— */
+.holdings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.holding-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 1.5rem;
+    transition: all 0.2s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+.holding-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--pink);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.2s;
+}
+
+.holding-card:hover {
+    border-color: var(--border-pink);
+    background: rgba(255, 46, 99, 0.03);
+}
+
+.holding-card:hover::before {
+    transform: scaleY(1);
+}
+
+.hc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.hc-ticker-wrap {}
+
+.hc-ticker {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.hc-name {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: 0.1rem;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+.hc-price {
+    text-align: right;
+}
+
+.hc-current {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.hc-change {
+    font-size: 0.72rem;
+    margin-top: 0.1rem;
+}
+
+.up {
+    color: var(--green);
+}
+
+.dn {
+    color: var(--pink);
+}
+
+.hc-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0.8rem 0;
+}
+
+.hc-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+.hc-stat-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.15rem;
+}
+
+.hc-stat-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.hc-weight-bar {
+    margin-top: 1rem;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.hc-weight-fill {
+    height: 100%;
+    background: var(--pink);
+    border-radius: 4px;
+}
+
+.hc-weight-label {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.3rem;
+}
+
+.hc-weight-text {
+    font-size: 0.62rem;
+    color: var(--text-dimmer);
+}
+
+.hc-sector-badge {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pink);
+    border: 1px solid var(--border-pink);
+    border-radius: 8px;
+    padding: 0.15rem 0.4rem;
+    margin-top: 0.5rem;
+    display: inline-block;
+}
+
+@media (max-width: 600px) {
+
+    .explore-hero,
+    .chart-section,
+    .holdings-section {
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+    }
+
+    .holdings-grid {
+        grid-template-columns: 1fr;
+    }
+}

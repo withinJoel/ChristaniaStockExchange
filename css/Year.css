@@ -1,0 +1,416 @@
+.year-hero {
+    padding: 5rem 2.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.year-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 80% at 90% 50%, rgba(255, 46, 99, 0.07), transparent);
+    pointer-events: none;
+}
+
+.year-num-bg {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(8rem, 18vw, 14rem);
+    letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.025);
+    pointer-events: none;
+    line-height: 1;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: var(--text-dimmer);
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+    color: var(--pink);
+}
+
+.breadcrumb-sep {
+    color: var(--border);
+}
+
+.year-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.year-display {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+}
+
+.year-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--pink);
+    margin-top: 0.5rem;
+}
+
+.year-hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.yhs-item {}
+
+.yhs-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.3rem;
+}
+
+.yhs-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* ——— SECTION ——— */
+.content-section {
+    padding: 3rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ——— QUARTERS ——— */
+.quarters-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.quarter-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.quarter-card:hover {
+    border-color: var(--border-pink);
+}
+
+.qc-header {
+    background: rgba(255, 46, 99, 0.06);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.qc-quarter {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+}
+
+.qc-period {
+    font-size: 0.7rem;
+    color: var(--text-dimmer);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.qc-body {
+    padding: 1.5rem;
+}
+
+.qc-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.qc-stat-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.2rem;
+}
+
+.qc-stat-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.qc-note {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.qc-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.qc-hl {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.qc-hl::before {
+    content: '✦';
+    color: var(--pink);
+    font-size: 0.6rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+}
+
+/* ——— MONTHLY EVENTS ——— */
+.events-timeline {
+    margin-top: 1.5rem;
+    position: relative;
+}
+
+.events-timeline::before {
+    content: '';
+    position: absolute;
+    left: 120px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+}
+
+.event-row {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.event-month {
+    width: 120px;
+    flex-shrink: 0;
+    padding-right: 1.5rem;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-dimmer);
+    padding-top: 0.15rem;
+}
+
+.event-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    margin: 0.15rem 1.5rem 0;
+    transition: border-color 0.2s;
+    position: relative;
+    z-index: 1;
+}
+
+.event-row:hover .event-dot {
+    border-color: var(--pink);
+}
+
+.event-row.positive .event-dot {
+    border-color: var(--green);
+    background: rgba(0, 229, 160, 0.15);
+}
+
+.event-row.negative .event-dot {
+    border-color: var(--pink);
+    background: rgba(255, 46, 99, 0.15);
+}
+
+.event-content {
+    flex: 1;
+}
+
+.event-type {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.2rem;
+}
+
+.event-type.buy {
+    color: var(--green);
+}
+
+.event-type.dividend {
+    color: var(--gold);
+}
+
+.event-type.milestone {
+    color: var(--pink);
+}
+
+.event-text {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+}
+
+/* ——— TOP MOMENTS ——— */
+.moments-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.moment-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+}
+
+.moment-card:hover {
+    border-color: var(--border-pink);
+}
+
+.moment-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.moment-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+}
+
+.moment-desc {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+}
+
+/* ——— SUMMARY CARD ——— */
+.summary-card {
+    background: var(--bg2);
+    border: 1px solid var(--border-pink);
+    border-radius: 28px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: 1.5rem;
+}
+
+.summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--pink), transparent);
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.sg-item {}
+
+.sg-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 0.4rem;
+}
+
+.sg-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.sg-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    color: var(--text-dimmer);
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 768px) {
+
+    .quarters-grid,
+    .moments-grid,
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-section {
+        padding: 2rem 1.2rem;
+    }
+
+    .year-hero {
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+    }
+
+    .events-timeline::before {
+        left: 80px;
+    }
+
+    .event-month {
+        width: 80px;
+        font-size: 0.62rem;
+    }
+}
